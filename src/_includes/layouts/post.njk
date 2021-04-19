@@ -1,0 +1,9 @@
+{% extends "layouts/base.njk" %}
+
+{% block main %}
+<header>
+  <h1>{{ title }}</h1>
+  <p>{{ subtitle }}</p>
+</header>
+{{ content | safe }}
+{% endblock %}
