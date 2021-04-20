@@ -6,6 +6,7 @@ find ./src/content -type f -name '*.md' -or -name '*.njk' \
 
 # Now go to the content repo and flatten it
 cd ./src/content || exit
+git branch --list -a
 for branch in $(git for-each-ref --format='%(refname)' refs/heads/); do
     if [ "$branch" != 'refs/heads/main' ]; then
         short_branch="$(echo "$branch" | cut -d'/' -f 3)"
