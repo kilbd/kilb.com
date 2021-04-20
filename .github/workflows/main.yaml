@@ -22,7 +22,7 @@ jobs:
           path: src/content
 
       - name: Install jq
-        run: sudo apt-get -y jq
+        run: sudo apt-get install -y jq
 
       - name: Pull down all drafts
         if: github.ref != 'refs/head/main'
