@@ -21,9 +21,13 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: src/content
 
-      # - name: Pull down all drafts
-      #   run: ./.github/scripts/flatten_branches.sh
-      #   shell: bash
+      - name: Install jq
+        run: sudo apt-get -y jq
+
+      - name: Pull down all drafts
+        if: github.ref != 'refs/head/main'
+        run: ./.github/scripts/flatten_branches.sh
+        shell: bash
 
       # Want to tag images with pattern siteSHA-contentSHA
       - name: Save SHA refs in TAG variable
