@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 # Start by getting all templates currently on main branch in content repo
 find ./src/content -type f -name '*.md' -or -name '*.njk' \
 | jq -R '[inputs]' > ./src/_data/published.json
