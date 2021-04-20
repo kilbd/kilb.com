@@ -43,7 +43,7 @@ jobs:
       - name: Build and tag the image
         run: >
           docker build -t ghcr.io/kilbd/$IMG:$TAG
-          -t ghcr.io/kilbd/$IMG:latest
+          -t ghcr.io/kilbd/$IMG:latest .
 
       - name: Login to container registry and push up images
         run: |
