@@ -48,4 +48,4 @@ jobs:
       - name: Login to container registry and push up images
         run: |
           docker login ghcr.io -u kilbd -p ${{ secrets.GH_PAT }}
-          docker push ghcr.io/kilbd/$IMG
+          docker push --all-tags ghcr.io/kilbd/$IMG
