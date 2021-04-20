@@ -7,10 +7,10 @@ find ./src/content -type f -name '*.md' -or -name '*.njk' \
 # Now go to the content repo and flatten it
 cd ./src/content || exit
 git branch --list -a
-for branch in $(git for-each-ref --format='%(refname)' refs/heads/); do
-    if [ "$branch" != 'refs/heads/main' ]; then
-        short_branch="$(echo "$branch" | cut -d'/' -f 3)"
-        git merge -m 'Automerge' "$short_branch"
+for branch in $(git for-each-ref --format='%(refname)' refs/remotes/); do
+    if [ "$branch" != 'refs/remotes/origin/main' ]; then
+        short_branch="$(echo "$branch" | cut -d'/' -f 4)"
+        git merge -m 'Automerge' "origin/$short_branch"
     fi
 done
 git log --oneline
