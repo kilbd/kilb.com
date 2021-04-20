@@ -20,6 +20,7 @@ jobs:
           repository: ${{ secrets.CONTENT_REPO }}
           token: ${{ secrets.GH_PAT }}
           path: src/content
+          fetch-depth: 0
 
       - name: Install jq
         run: sudo apt-get install -y jq
