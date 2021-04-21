@@ -1,0 +1,56 @@
+name: CI/CD Jobs
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Pull in content repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ secrets.CONTENT_REPO }}
+          token: ${{ secrets.GH_PAT }}
+          path: src/content
+          fetch-depth: 0
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Pull down all drafts
+        if: github.ref != 'refs/head/main'
+        run: ./.github/scripts/flatten_branches.sh
+        shell: bash
+
+      # Want to tag images with pattern siteSHA-contentSHA
+      - name: Save SHA refs in TAG variable
+        run: >
+          echo "TAG=$(echo $GITHUB_SHA | head -c7)-$(git rev-parse HEAD | head -c7)"
+          >> $GITHUB_ENV
+        working-directory: ./src/content
+
+      - name: Save dev image name
+        if: github.ref != 'refs/head/main'
+        run: echo "IMG=${{ secrets.DEV_SITE }}" >> $GITHUB_ENV
+
+      - name: Save prod image name
+        if: github.ref == 'refs/head/main'
+        run: echo "IMG=kilb.com" >> $GITHUB_ENV
+
+      - name: Build and tag the image
+        run: >
+          docker build -t ghcr.io/kilbd/$IMG:$TAG
+          -t ghcr.io/kilbd/$IMG:latest .
+
+      - name: Login to container registry and push up images
+        run: |
+          docker login ghcr.io -u kilbd -p ${{ secrets.GH_PAT }}
+          docker push --all-tags ghcr.io/kilbd/$IMG
