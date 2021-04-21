@@ -6,6 +6,8 @@ find ./src/content -type f -name '*.md' -or -name '*.njk' \
 
 # Now go to the content repo and flatten it
 cd ./src/content || exit
+git config --global user.name "GitHub Actions"
+git config --global user.email "github-actions@github.com"
 for branch in $(git for-each-ref --format='%(refname)' refs/remotes/); do
     if [ "$branch" != 'refs/remotes/origin/main' ]; then
         short_branch="$(echo "$branch" | cut -d'/' -f 4)"
