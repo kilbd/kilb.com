@@ -1,9 +1,9 @@
 name: CI/CD Jobs
 on:
   push:
-    branches:
-      - main
-      - develop
+    # branches:
+    #   - main
+    #   - develop
   workflow_dispatch:
 
 jobs:
@@ -26,31 +26,34 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Pull down all drafts
-        if: github.ref != 'refs/head/main'
+        if: github.ref != 'refs/heads/main'
         run: ./.github/scripts/flatten_branches.sh
         shell: bash
 
-      # Want to tag images with pattern siteSHA-contentSHA
-      - name: Save SHA refs in TAG variable
-        run: >
-          echo "TAG=$(echo $GITHUB_SHA | head -c7)-$(git rev-parse HEAD | head -c7)"
-          >> $GITHUB_ENV
-        working-directory: ./src/content
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
 
-      - name: Save dev image name
-        if: github.ref != 'refs/head/main'
-        run: echo "IMG=${{ secrets.DEV_SITE }}" >> $GITHUB_ENV
-
-      - name: Save prod image name
-        if: github.ref == 'refs/head/main'
-        run: echo "IMG=kilb.com" >> $GITHUB_ENV
-
-      - name: Build and tag the image
-        run: >
-          docker build -t ghcr.io/kilbd/$IMG:$TAG
-          -t ghcr.io/kilbd/$IMG:latest .
-
-      - name: Login to container registry and push up images
+      - name: Generate site
         run: |
-          docker login ghcr.io -u kilbd -p ${{ secrets.GH_PAT }}
-          docker push --all-tags ghcr.io/kilbd/$IMG
+          npm install
+          npm run build
+
+      - name: Save dev bucket name
+        if: github.ref != 'refs/heads/main'
+        run: echo "BUCKET=${{ secrets.DEV_BUCKET }}" >> $GITHUB_ENV
+
+      - name: Save prod bucket name
+        if: github.ref == 'refs/heads/main'
+        run: echo "BUCKET=${{ secrets.PROD_BUCKET }}" >> $GITHUB_ENV
+
+      - name: Upload to object storage
+        uses: BetaHuhn/do-spaces-action@master
+        with:
+          access_key: ${{ secrets.ACCESS_ID }}
+          secret_key: ${{ secrets.SECRET_KEY }}
+          space_region: ${{ secrets.REGION }}
+          space_name: $BUCKET
+          source: dist
+          permission: private
