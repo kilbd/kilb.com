@@ -50,6 +50,7 @@ jobs:
           space_name: ${{ secrets.DEV_BUCKET }}
           source: dist
           permission: private
+          versioning: false
 
       - name: Upload to prod object storage
         if: github.ref == 'refs/heads/main'
@@ -61,3 +62,4 @@ jobs:
           space_name: ${{ secrets.PROD_BUCKET }}
           source: dist
           permission: private
+          versioning: false
