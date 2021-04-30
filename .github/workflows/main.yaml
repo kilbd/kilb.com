@@ -40,20 +40,24 @@ jobs:
           npm install
           npm run build
 
-      - name: Save dev bucket name
+      - name: Upload to dev object storage bucket
         if: github.ref != 'refs/heads/main'
-        run: echo "BUCKET=${{ secrets.DEV_BUCKET }}" >> $GITHUB_ENV
-
-      - name: Save prod bucket name
-        if: github.ref == 'refs/heads/main'
-        run: echo "BUCKET=${{ secrets.PROD_BUCKET }}" >> $GITHUB_ENV
-
-      - name: Upload to object storage
         uses: BetaHuhn/do-spaces-action@master
         with:
           access_key: ${{ secrets.ACCESS_ID }}
           secret_key: ${{ secrets.SECRET_KEY }}
           space_region: ${{ secrets.REGION }}
-          space_name: $BUCKET
+          space_name: ${{ secrets.DEV_BUCKET }}
+          source: dist
+          permission: private
+
+      - name: Upload to prod object storage
+        if: github.ref == 'refs/heads/main'
+        uses: BetaHuhn/do-spaces-action@master
+        with:
+          access_key: ${{ secrets.ACCESS_ID }}
+          secret_key: ${{ secrets.SECRET_KEY }}
+          space_region: ${{ secrets.REGION }}
+          space_name: ${{ secrets.PROD_BUCKET }}
           source: dist
           permission: private
