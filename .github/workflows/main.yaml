@@ -49,6 +49,7 @@ jobs:
           space_region: ${{ secrets.REGION }}
           space_name: ${{ secrets.DEV_BUCKET }}
           source: dist
+          versioning: false
 
       - name: Upload to prod object storage
         if: github.ref == 'refs/heads/main'
