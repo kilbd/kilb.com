@@ -42,7 +42,7 @@ jobs:
 
       - name: Upload to dev object storage bucket
         if: github.ref != 'refs/heads/main'
-        uses: BetaHuhn/do-spaces-action@master
+        uses: BetaHuhn/do-spaces-action@develop
         with:
           access_key: ${{ secrets.ACCESS_ID }}
           secret_key: ${{ secrets.SECRET_KEY }}
@@ -59,3 +59,4 @@ jobs:
           space_region: ${{ secrets.REGION }}
           space_name: ${{ secrets.PROD_BUCKET }}
           source: dist
+          versioning: false
