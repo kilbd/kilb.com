@@ -1,0 +1,61 @@
+name: CI/CD Jobs
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Pull in content repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ secrets.CONTENT_REPO }}
+          token: ${{ secrets.GH_PAT }}
+          path: src/content
+          fetch-depth: 0
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Pull down all drafts
+        if: github.ref != 'refs/heads/main'
+        run: ./.github/scripts/flatten_branches.sh
+        shell: bash
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Generate site
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload to dev object storage bucket
+        if: github.ref != 'refs/heads/main'
+        uses: BetaHuhn/do-spaces-action@v2
+        with:
+          access_key: ${{ secrets.ACCESS_ID }}
+          secret_key: ${{ secrets.SECRET_KEY }}
+          space_region: ${{ secrets.REGION }}
+          space_name: ${{ secrets.DEV_BUCKET }}
+          source: dist
+
+      - name: Upload to prod object storage
+        if: github.ref == 'refs/heads/main'
+        uses: BetaHuhn/do-spaces-action@v2
+        with:
+          access_key: ${{ secrets.ACCESS_ID }}
+          secret_key: ${{ secrets.SECRET_KEY }}
+          space_region: ${{ secrets.REGION }}
+          space_name: ${{ secrets.PROD_BUCKET }}
+          source: dist
