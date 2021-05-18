@@ -7,6 +7,16 @@
     {{ end }}</title>
   </head>
   <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {{- range $sect := .Site.Params.mainSections }}
+        <li>
+          <a href="/{{ $sect }}/">{{ $sect | title }}</a>
+        </li>
+        {{- end }}
+      </ul>
+    </nav>
     {{- block "main" . }}
     <p>There is no content</p>
     {{ end -}}
