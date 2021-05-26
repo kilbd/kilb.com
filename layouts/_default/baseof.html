@@ -5,22 +5,27 @@
     <title>{{ block "title" . }}
       {{- .Site.Title -}}
     {{ end }}</title>
+    {{ $baseStyles := resources.Get "css/base.css" | minify }}
+    <link rel="stylesheet" href="{{ $baseStyles.Permalink }}" />
   </head>
   <body>
-    <nav>
-      <ul>
-        <li><a href="/">Home</a></li>
-        {{- range $sect := .Site.Params.mainSections }}
-        <li>
-          <a href="/{{ $sect }}/">{{ $sect | title }}</a>
-        </li>
-        {{- end }}
-      </ul>
-    </nav>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {{- range $sect := .Site.Params.mainSections }}
+          <li>
+            <a href="/{{ $sect }}/">{{ $sect | title }}</a>
+          </li>
+          {{- end }}
+        </ul>
+      </nav>
+    </header>
     <main>
       {{- block "main" . }}
       <p>There is no content</p>
       {{ end -}}
     </main>
+    <footer>(c) Drew Kilb</footer>
   </body>
 </html>
