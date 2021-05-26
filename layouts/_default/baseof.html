@@ -17,8 +17,10 @@
         {{- end }}
       </ul>
     </nav>
-    {{- block "main" . }}
-    <p>There is no content</p>
-    {{ end -}}
+    <main>
+      {{- block "main" . }}
+      <p>There is no content</p>
+      {{ end -}}
+    </main>
   </body>
 </html>
