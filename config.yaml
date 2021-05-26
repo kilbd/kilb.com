@@ -1,2 +1,5 @@
 params:
+  mainSections:
+    - blog
+    - projects
   mediaBaseURL: "https://media.kilb.com"
