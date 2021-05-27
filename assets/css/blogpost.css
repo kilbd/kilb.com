@@ -2,6 +2,7 @@ main {
   align-self: center;
   line-height: 1.75;
   max-width: 50em;
+  padding: 1em;
   width: 100%;
 }
 

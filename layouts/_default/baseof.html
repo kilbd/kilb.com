@@ -7,6 +7,8 @@
     {{ end }}</title>
     {{ $baseStyles := resources.Get "css/base.css" | minify }}
     <link rel="stylesheet" href="{{ $baseStyles.Permalink }}" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Work+Sans:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     {{ block "includes" .}}{{ end }}
   </head>
   <body>
