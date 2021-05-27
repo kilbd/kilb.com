@@ -1,0 +1,15 @@
+main {
+  align-self: center;
+  line-height: 1.75;
+  max-width: 50em;
+  width: 100%;
+}
+
+pre {
+  overflow-x: auto;
+  padding: 1rem 1.5rem;
+}
+
+.highlight {
+  overflow-x: hidden;
+}
