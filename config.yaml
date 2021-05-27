@@ -3,3 +3,7 @@ params:
     - blog
     - projects
   mediaBaseURL: "https://media.kilb.com"
+markup:
+  highlight:
+    noClasses: false
+    codeFences: true
