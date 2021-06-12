@@ -26,6 +26,7 @@ nav ul {
   display: flex;
   justify-content: flex-end;
   list-style: none;
+  padding: 0;
 }
 
 nav ul li {
@@ -34,6 +35,10 @@ nav ul li {
 
 nav ul li:first-child {
   flex: 1;
+}
+
+nav img {
+  height: 5rem;
 }
 
 main {
