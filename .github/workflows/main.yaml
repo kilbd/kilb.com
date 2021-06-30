@@ -13,5 +13,5 @@ jobs:
         run: >
           curl -X POST -i -H "Authorization: token ${{ secrets.GH_PAT }}"
           -H "Content-Type: application/json" -H "Accept: application/vnd.github.v3+json"
-          -d '{"ref": "main", "inputs": {"site-branch": "${{ github.ref }}"}}'
+          -d '{"ref": "main", "inputs": {"branch": "${{ github.ref }}"}}'
           https://api.github.com/repos/kilbd/${{ secrets.CONTENT_REPO }}/actions/workflows/main.yaml/dispatches

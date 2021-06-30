@@ -3,7 +3,7 @@
   {{ $.Inner | markdownify }}
   {{- end -}}
   <figcaption>
-    {{ .Get "caption" }}
+    <p>{{ .Get "caption" }}</p>
     {{- with .Get "syntax" -}}
     <dl>
       <dt>Syntax</dt>

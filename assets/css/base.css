@@ -1,0 +1,47 @@
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Work Sans", Helvetica, Arial, sans-serif;
+  font-weight: 350;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Roboto Slab", serif;
+}
+
+strong {
+  font-weight: 750;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+nav ul {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 0.25rem 1rem;
+}
+
+nav ul li:first-child {
+  flex: 1;
+}
+
+nav img {
+  height: 5rem;
+}
+
+main {
+  flex-grow: 1;
+  flex-shrink: 0;
+}

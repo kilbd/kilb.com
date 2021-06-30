@@ -1,0 +1,14 @@
+{{ define "includes" }}
+  {{ $styles := resources.Get "css/blogpost.css" }}
+  <link rel="stylesheet" href="{{ $styles.Permalink }}" />
+  {{ $syntax := resources.Get "css/syntax.css" }}
+  <link rel="stylesheet" href="{{ $syntax.Permalink }}" />
+{{ end }}
+
+{{ define "main" }}
+<header>
+  <h1>{{ .Page.Params.title }}</h1>
+  <p>{{ .Page.Params.subtitle }}</p>
+</header>
+{{ .Content }}
+{{ end }}
