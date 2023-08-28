@@ -1,0 +1,21 @@
+<figure>
+  {{- with .Get "captionBelow" -}}
+  {{ $.Inner | markdownify }}
+  {{- end -}}
+  <figcaption>
+    <p>{{ .Get "caption" }}</p>
+    {{- with .Get "syntax" -}}
+    <dl>
+      <dt>Syntax</dt>
+      <dd>{{ . }}</dd>
+      {{- with $.Get "filename" -}}
+      <dt>Filename</dt>
+      <dd>{{ . }}</dd>
+      {{- end -}}
+    </dl>
+    {{- end -}}
+  </figcaption>
+  {{- with not (.Get "captionBelow") -}}
+  {{ $.Inner | markdownify }}
+  {{- end -}}
+</figure>

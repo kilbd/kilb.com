@@ -1,0 +1,11 @@
+{{ define "main" }}
+    <h1>Blog</h1>
+    <ul>
+    {{ range .Paginator.Pages }}
+      <li>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <p>{{ .Params.subtitle }}</p>
+      </li>
+    {{ end }}
+    </ul>
+{{ end }}
