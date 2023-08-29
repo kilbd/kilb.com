@@ -1,0 +1,21 @@
+<figure>
+  {%- if captionBelow -%}
+  {{ body | markdown | safe }}
+  {%- endif -%}
+  <figcaption>
+    <p>{{ caption }}</p>
+    {%- if syntax -%}
+    <dl>
+      <dt>Syntax</dt>
+      <dd>{{ syntax }}</dd>
+      {%- if filename -%}
+      <dt>Filename</dt>
+      <dd>{{ filename }}</dd>
+      {%- endif -%}
+    </dl>
+    {%- endif -%}
+  </figcaption>
+  {%- if not captionBelow -%}
+  {{ body | markdown | safe }}
+  {%- endif -%}
+</figure>

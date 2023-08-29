@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+    <h1>Home Page</h1>
+    <ul>
+  {# {{- range first 3 (where .Site.RegularPages "Section" "blog")}}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+  {{- end }} #}
+    </ul>
+{% endblock main %}

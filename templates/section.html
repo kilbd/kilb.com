@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block main %}
+    <h1>Blog</h1>
+    <ul>
+    {% for p in section.pages %}
+      <li>
+        <a href="{{ p.permalink }}">{{ p.title }}</a>
+    <p>{{ p.summary }}</p>
+      </li>
+    {% endfor %}
+    </ul>
+{% endblock main %}

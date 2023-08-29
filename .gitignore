@@ -1,3 +1,5 @@
-node_modules
-src/content
-dist
+# Content repository cloned to 'content' directory
+content
+# Generated site
+public
+
