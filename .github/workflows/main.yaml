@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate site
         run: |
-          snap install --edge zola
+          sudo snap install --edge zola
           zola build
 
       - name: Configure AWS
