@@ -1,17 +1,37 @@
 name: Build Site
 on:
   push:
-    branches:
-      - main
-      - develop
+#    branches:
+#      - main
+  workflow_dispatch:
+
 jobs:
-  trigger-build:
-    name: Trigger site build
+  build:
+    name: Build and upload site
     runs-on: ubuntu-latest
     steps:
-      - name: Send Workflow Dispatch API request
-        run: >
-          curl -X POST -i -H "Authorization: token ${{ secrets.GH_PAT }}"
-          -H "Content-Type: application/json" -H "Accept: application/vnd.github.v3+json"
-          -d '{"ref": "main", "inputs": {"branch": "${{ github.ref }}"}}'
-          https://api.github.com/repos/kilbd/${{ secrets.CONTENT_REPO }}/actions/workflows/main.yaml/dispatches
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Pull in content repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.CONTENT_REPO }}
+          token: ${{ secrets.GH_PAT }}
+          path: content
+
+      - name: Generate site
+        run: |
+          snap install --edge zola
+          zola build
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_OIDC
+
+      - name: Upload to S3
+        run: |
+          aws s3 sync public ${{ secrets.AWS_S3_BUCKET }} --delete
+
